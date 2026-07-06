@@ -10246,6 +10246,23 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426"
 
 [[package]]
+name = "velo"
+version = "0.1.0"
+dependencies = [
+ "crossbeam-channel",
+ "futures-util",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tokio",
+ "tracing",
+ "uuid",
+ "velo-agent",
+ "velo-core",
+]
+
+[[package]]
 name = "velo-agent"
 version = "0.1.0"
 dependencies = [
@@ -10307,23 +10324,6 @@ dependencies = [
  "wasmtime",
  "xcap",
  "zip",
-]
-
-[[package]]
-name = "velo-tauri"
-version = "0.1.0"
-dependencies = [
- "crossbeam-channel",
- "futures-util",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tokio",
- "tracing",
- "uuid",
- "velo-agent",
- "velo-core",
 ]
 
 [[package]]
