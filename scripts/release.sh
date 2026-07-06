@@ -397,7 +397,17 @@ collect_if_dir() {
 			name="$(basename "$f")"
 			local ext="${name##*.}"
 			local stem="${name%.*}"
-			local newname="${BIN}_${VER}_${BUILD_OS}_${stem}.${ext}"
+
+			local arch=""
+			case "$stem" in
+				*amd64)  arch="amd64" ;;
+				*x86_64) arch="x86_64" ;;
+				*x64)    arch="x64" ;;
+				*arm64)  arch="arm64" ;;
+				*armv7)  arch="armv7" ;;
+				*)       arch="unknown" ;;
+			esac
+			local newname="${BIN}_${VER}_${BUILD_OS}_${arch}.${ext}"
 			cp -p "$f" "$BUILDDIR/release/$newname"
 			ARTIFACTS+=("$BUILDDIR/release/$newname")
 			info "  collected: $newname"
@@ -470,19 +480,19 @@ RELEASE_NOTES="$BUILDDIR/release/RELEASE_NOTES.md"
 	echo "## Install"
 	echo ""
 	echo '```sh'
-	echo "# ── Linux ────────────────────────────────────────────────────────"
-	echo "# Debian / Ubuntu"
-	echo "sudo dpkg -i ${BIN}_${VER}_linux_*.deb"
-	echo ""
-	echo "# Fedora / RHEL"
-	echo "sudo rpm -i ${BIN}_${VER}_linux_*.rpm"
-	echo ""
-	echo "# ── macOS ────────────────────────────────────────────────────────"
-	echo "open ${BIN}_${VER}_macos_*.dmg"
-	echo ""
-	echo "# ── Windows ──────────────────────────────────────────────────────"
-	echo "# Double-click the setup.exe"
-	echo '```'
+echo "# ── Linux ────────────────────────────────────────────────────────"
+echo "# Debian / Ubuntu"
+echo "sudo dpkg -i ${BIN}_${VER}_linux_amd64.deb"
+echo ""
+echo "# Fedora / RHEL"
+echo "sudo rpm -i ${BIN}_${VER}_linux_x86_64.rpm"
+echo ""
+echo "# ── macOS ────────────────────────────────────────────────────────"
+echo "open ${BIN}_${VER}_macos_x64.dmg"
+echo ""
+echo "# ── Windows ──────────────────────────────────────────────────────"
+echo "# Double-click the .exe setup"
+echo '```'
 	echo ""
 
 	echo "## Changelog"
