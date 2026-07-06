@@ -1,5 +1,5 @@
 [package]
-name    = "velo-tauri"
+name = "velo"
 version.workspace = true
 edition.workspace = true
 
