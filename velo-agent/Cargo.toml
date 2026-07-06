@@ -1,0 +1,22 @@
+[package]
+name    = "velo-agent"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "velo-agent"
+path = "src/main.rs"
+
+[lib]
+name = "velo_agent"
+path = "src/lib.rs"
+
+[dependencies]
+velo-core = { path = "../velo-core" }
+
+tokio.workspace     = true
+anyhow.workspace    = true
+serde_json.workspace = true
+tracing.workspace   = true
+uuid.workspace      = true
+arboard.workspace   = true

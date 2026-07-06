@@ -1,0 +1,28 @@
+[build]
+# Optimized for your hardware (AMD Ryzen 7 5700G, 9 Cores)
+jobs = 8
+incremental = true
+
+[env]
+RUST_TEST_THREADS = "1"
+
+# ─── Host Architecture (x86_64) ───
+[target.x86_64-unknown-linux-gnu]
+# Using 'mold' for the fastest possible linking on Linux
+rustflags = ["-C", "link-arg=-fuse-ld=mold", "-C", "target-cpu=native"]
+
+# ─── Cross-Compilation Targets (ARM64 / ARMv7 / MUSL) ───
+[target.aarch64-unknown-linux-gnu]
+linker = "aarch64-linux-gnu-gcc"
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+
+[target.armv7-unknown-linux-gnueabihf]
+linker = "arm-linux-gnueabihf-gcc"
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+
+[target.x86_64-unknown-linux-musl]
+linker = "musl-gcc"
+rustflags = ["-C", "target-feature=+crt-static"]
+
+[target.aarch64-unknown-linux-musl]
+rustflags = ["-C", "target-feature=+crt-static"]

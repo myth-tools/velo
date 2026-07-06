@@ -1,0 +1,66 @@
+# Velo Configuration
+# Copy to ~/.velo/config.yaml and edit.
+# API keys are read from environment variables (NVIDIA_API_KEY, GEMINI_API_KEY).
+
+
+# Agent identity — who built this agent and who it represents.
+# The agent introspects this at runtime to describe itself to users.
+identity:
+  name: "Velo"
+  developer: "Shesher Hasan"
+  version: "0.1.0"
+  description: "An autonomous desktop agent"
+  homepage: "https://shesher.qzz.io"
+  email: "shesher0llms@gmail.com"
+  repository: "https://github.com/myth-tools/velo"
+
+
+llms:
+  # Primary ReAct reasoning model
+  react:
+    provider: nim
+    model: deepseek-ai/deepseek-v4-flash
+    base_url: https://integrate.api.nvidia.com/v1
+    max_tokens: 65536
+    temperature: 0.5
+
+  # multi-modal for Sub-agent (images, audio, video frames, PDFs).
+  # Used by the media_analysis sub-agent.
+  vision:
+    provider: nim
+    model: nvidia/nemotron-3-nano-omni-30b-a3b-reasoning
+    base_url: https://integrate.api.nvidia.com/v1
+    max_tokens: 32768
+    temperature: 0.3
+
+  # Embedding model for semantic memory (vector search).
+  # Used by the memory system for RAG and similarity search.
+  embedding:
+    provider: nim
+    model: nvidia/llama-nemotron-embed-1b-v2
+    dimension: 2048
+    base_url: https://integrate.api.nvidia.com/v1
+
+  # Cloud speech-to-text (Google Gemini)
+  # Supported providers: "google" (default), "openai"
+  stt:
+    provider: google
+    model: models/gemini-2.5-flash-native-audio-latest
+    base_url: https://generativelanguage.googleapis.com/v1beta
+
+settings:
+  clipboard_poll_ms: 200
+  shell_timeout_secs: 60
+  snapshot_dir: ~/.velo/snapshots
+
+  # ── Sandbox (all disabled by default — no restrictions) ──────────────────
+  # Filesystem sandboxing: restrict which paths the agent can read/write.
+  # When enabled, paths must match allow lists and must not match deny lists.
+  # Prefix matching — "/etc/" blocks "/etc/passwd", "/etc/ssh/sshd_config", etc.
+  sandbox:
+    filesystem:
+      enabled: false
+      allow_read: []
+      deny_read: []
+      allow_write: []
+      deny_write: []

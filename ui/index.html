@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Velo — Autonomous OS Agent</title>
+    <meta name="description" content="Hyper-fast autonomous desktop agent powered by NVIDIA NIM AI" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/styles/main.css" />
+    <link rel="stylesheet" href="/src/styles/command-bar.css" />
+    <link rel="stylesheet" href="/src/styles/conversation.css" />
+    <link rel="stylesheet" href="/src/styles/dashboard.css" />
+    <link rel="stylesheet" href="/src/styles/modal.css" />
+    <link rel="stylesheet" href="/src/styles/orb.css" />
+  </head>
+  <body>
+    <!-- ════════════════════════════════════════════════════════════════════════
+         VELO ORB  —  collapsed floating bubble avatar.
+         Always rendered (so morph transitions can scale it), only visible
+         when the app shell is in 'orb' state.
+    ═════════════════════════════════════════════════════════════════════════ -->
+    <div id="orb" aria-label="Velo assistant" role="button" tabindex="0">
+      <div id="orb-core">
+        <svg id="orb-glyph" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 2 L4 14 L11 14 L9 22 L20 9 L13 9 Z" fill="currentColor"/>
+        </svg>
+        <span id="orb-label">v</span>
+      </div>
+      <div id="orb-ripple" aria-hidden="true"></div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════════
+         VELO APP SHELL  —  glassy desktop panel revealed on orb click.
+    ═════════════════════════════════════════════════════════════════════════ -->
+    <div id="app">
+      <!-- Command bar (also serves as drag region) -->
+      <div id="command-bar" data-tauri-drag-region>
+        <div id="cmd-logo" aria-hidden="true">⚡</div>
+
+        <div id="cmd-input-wrapper">
+          <input
+            id="cmd-input"
+            type="text"
+            placeholder="Ask Velo anything…"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Command input"
+          />
+        </div>
+
+        <button id="voice-btn" title="Voice input" aria-label="Toggle voice input">
+          <span id="voice-icon">🎙</span>
+          <canvas id="voice-waveform" width="24" height="24" aria-hidden="true"></canvas>
+        </button>
+
+        <button id="dashboard-btn" title="Toggle dashboard" aria-label="Toggle dashboard">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </button>
+
+        <div id="window-controls">
+          <button id="minimize-btn" title="Collapse to orb" aria-label="Collapse to orb">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="3 6 8 11 13 6"/>
+            </svg>
+          </button>
+          <button id="close-btn" title="Close" aria-label="Close window">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+              <line x1="4" y1="4" x2="12" y2="12"/>
+              <line x1="12" y1="4" x2="4" y2="12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Persistent conversation transcript -->
+      <div id="conversation" aria-label="Conversation" hidden>
+        <div id="transcript-scroll">
+          <div id="transcript" role="log" aria-live="polite" aria-atomic="false"></div>
+        </div>
+      </div>
+
+      <!-- Collapsible dashboard drawer -->
+      <div id="dashboard" aria-label="Task dashboard" hidden>
+        <div id="dashboard-header">
+          <span>Task Timeline</span>
+          <button id="undo-btn" title="Undo last operation" aria-label="Undo last operation">↩ Undo</button>
+        </div>
+        <div id="task-list" role="list" aria-label="Tasks"></div>
+      </div>
+
+      <!-- Clipboard suggestion pill -->
+      <div id="suggestion-bar" hidden role="alert" aria-live="assertive">
+        <span id="suggestion-icon">💡</span>
+        <span id="suggestion-headline"></span>
+        <button id="suggestion-apply-btn">Apply Fix</button>
+        <button id="suggestion-dismiss-btn" aria-label="Dismiss suggestion">✕</button>
+      </div>
+    </div>
+
+    <!-- Destructive action confirmation modal -->
+    <div id="modal-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div id="modal-card">
+        <div id="modal-icon" aria-hidden="true">⚠️</div>
+        <h2 id="modal-title">Confirm Action</h2>
+        <p id="modal-description"></p>
+        <div id="modal-action-details"></div>
+        <div id="modal-buttons">
+          <button id="modal-cancel-btn" class="modal-btn modal-btn--cancel">Cancel</button>
+          <button id="modal-confirm-btn" class="modal-btn modal-btn--confirm">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

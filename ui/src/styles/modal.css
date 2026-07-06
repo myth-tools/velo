@@ -1,0 +1,120 @@
+/* ── Modal overlay ────────────────────────────────────────────────────────────*/
+#modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 8, 16, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: slide-in-up var(--dur-normal) var(--ease-spring);
+}
+
+#modal-overlay[hidden] {
+  display: none;
+}
+
+/* ── Modal card ───────────────────────────────────────────────────────────────*/
+#modal-card {
+  width: min(440px, 90vw);
+  background: var(--clr-surface);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
+  border: 1px solid rgba(239, 68, 68, 0.22);
+  border-radius: var(--r-lg);
+  padding: var(--sp-6);
+  box-shadow:
+    0 24px 80px rgba(0,0,0,0.7),
+    0 0 0 1px rgba(239, 68, 68, 0.1),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+/* ── Modal icon ───────────────────────────────────────────────────────────────*/
+#modal-icon {
+  font-size: 36px;
+  line-height: 1;
+  text-align: center;
+  filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.5));
+  animation: mic-pulse 1.8s ease-in-out infinite;
+}
+
+/* ── Modal title ──────────────────────────────────────────────────────────────*/
+#modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--clr-text-primary);
+  letter-spacing: -0.01em;
+}
+
+/* ── Modal description ────────────────────────────────────────────────────────*/
+#modal-description {
+  font-size: var(--fs-sm);
+  color: var(--clr-text-secondary);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ── Action details box ───────────────────────────────────────────────────────*/
+#modal-action-details {
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  border-radius: var(--r-md);
+  padding: var(--sp-3) var(--sp-4);
+  font-family: 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
+  font-size: var(--fs-xs);
+  color: var(--clr-red);
+  word-break: break-all;
+  line-height: 1.6;
+}
+
+/* ── Modal buttons ────────────────────────────────────────────────────────────*/
+#modal-buttons {
+  display: flex;
+  gap: var(--sp-3);
+  margin-top: var(--sp-1);
+}
+
+.modal-btn {
+  flex: 1;
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-smooth);
+  border: 1px solid transparent;
+}
+
+.modal-btn--cancel {
+  background: var(--clr-surface-2);
+  border-color: var(--clr-border);
+  color: var(--clr-text-secondary);
+}
+
+.modal-btn--cancel:hover {
+  border-color: rgba(255,255,255,0.15);
+  color: var(--clr-text-primary);
+}
+
+.modal-btn--confirm {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.45);
+  color: var(--clr-red);
+}
+
+.modal-btn--confirm:hover {
+  background: rgba(239, 68, 68, 0.32);
+  border-color: var(--clr-red);
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.2);
+}
+
+.modal-btn--confirm:active {
+  transform: scale(0.97);
+}

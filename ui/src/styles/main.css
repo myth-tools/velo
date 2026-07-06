@@ -1,0 +1,252 @@
+/* ════════════════════════════════════════════════════════════════════════════
+   VELO  —  design tokens  (single source of truth)
+ ════════════════════════════════════════════════════════════════════════════*/
+:root {
+  /* ── Palette ──────────────────────────────────────────────────────────────*/
+  --clr-bg:          rgba(8, 10, 18, 0.94);
+  --clr-surface:     rgba(15, 17, 28, 0.90);
+  --clr-surface-2:   rgba(22, 25, 42, 0.82);
+  --clr-surface-3:   rgba(28, 32, 54, 0.70);
+  --clr-border:      rgba(255, 255, 255, 0.07);
+  --clr-border-glow: rgba(100, 220, 255, 0.30);
+
+  --clr-cyan:        hsl(195, 100%, 60%);
+  --clr-cyan-dim:    hsl(195, 80%, 40%);
+  --clr-cyan-bright: hsl(195, 100%, 72%);
+  --clr-purple:      hsl(268, 82%, 70%);
+  --clr-purple-dim:  hsl(268, 60%, 50%);
+  --clr-amber:       hsl(38, 100%, 64%);
+  --clr-red:         hsl(0, 85%, 64%);
+  --clr-green:       hsl(145, 72%, 54%);
+
+  --clr-text-primary:   rgba(238, 243, 255, 0.97);
+  --clr-text-secondary: rgba(158, 168, 200, 0.78);
+  --clr-text-muted:     rgba(98, 112, 148, 0.62);
+
+  /* ── Typography ───────────────────────────────────────────────────────────*/
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --fs-xs:  11px;
+  --fs-sm:  13px;
+  --fs-md:  15px;
+  --fs-lg:  18px;
+  --fs-xl:  22px;
+
+  /* ── Spacing ──────────────────────────────────────────────────────────────*/
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+
+  /* ── Radius ───────────────────────────────────────────────────────────────*/
+  --r-pill: 999px;
+  --r-xl:   20px;
+  --r-lg:   16px;
+  --r-md:   10px;
+  --r-sm:    6px;
+
+  /* ── Blur / glass ─────────────────────────────────────────────────────────*/
+  --blur-glass:   blur(28px) saturate(200%);
+  --blur-heavy:   blur(40px) saturate(240%);
+  --blur-light:   blur(16px) saturate(160%);
+
+  /* ── Easing ───────────────────────────────────────────────────────────────*/
+  /* Standard smooth ease */
+  --ease-smooth:       cubic-bezier(0.4, 0, 0.2, 1);
+  /* Premium out-quint */
+  --ease-premium:      cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-quint:    cubic-bezier(0.22, 1, 0.36, 1);
+  /* Spring with overshoot — used for orb pop and panel entry */
+  --ease-spring:       cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Hard spring — messenger-ball pop */
+  --ease-spring-hard:  cubic-bezier(0.34, 1.82, 0.64, 1);
+  /* Gentle spring */
+  --ease-spring-soft:  cubic-bezier(0.34, 1.35, 0.64, 1);
+  /* Squish in (fast-in) */
+  --ease-in-back:      cubic-bezier(0.36, 0, 0.66, -0.56);
+
+  /* ── Duration ─────────────────────────────────────────────────────────────*/
+  --dur-instant:   80ms;
+  --dur-fast:     140ms;
+  --dur-normal:   240ms;
+  --dur-slow:     380ms;
+  --dur-morph:    480ms;
+  --dur-morph-in: 560ms;   /* orb → app  (longer for elegance)            */
+  --dur-morph-out:440ms;   /* app → orb  (slightly snappier)              */
+
+  /* ── Shadow stacks ────────────────────────────────────────────────────────*/
+  --shadow-shell:
+    0 24px 64px rgba(0, 0, 0, 0.62),
+    0  4px 16px rgba(0, 0, 0, 0.40),
+    0  0  0  1px rgba(100, 220, 255, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    inset 0 0 80px rgba(100, 220, 255, 0.02);
+
+  --shadow-orb:
+    0  8px 24px rgba(0, 0, 0, 0.65),
+    0  4px 12px rgba(0, 0, 0, 0.45),
+    0  0  0  1px rgba(100, 220, 255, 0.15),
+    0  0 16px rgba(100, 220, 255, 0.25),
+    inset 0 2px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.40);
+}
+
+/* ── Reset ────────────────────────────────────────────────────────────────────*/
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  color: var(--clr-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+}
+
+/* Orb mode — fill transparent window so OS doesn't flash white */
+body[data-shell="orb"] {
+  background: transparent;
+}
+
+/* ── App wrapper ──────────────────────────────────────────────────────────────*/
+#app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+}
+
+/* App shell — premium glassy panel */
+body[data-shell="app"] #app {
+  border-radius: var(--r-lg);
+  background: var(--clr-bg);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
+  border: 1px solid var(--clr-border);
+  box-shadow: var(--shadow-shell);
+  overflow: hidden;
+  /* Accent glow line at the top */
+  outline: none;
+}
+
+/* Cyan accent bar at the very top of the panel */
+body[data-shell="app"] #app::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(100, 220, 255, 0.00) 5%,
+    rgba(100, 220, 255, 0.55) 30%,
+    rgba(100, 220, 255, 0.80) 50%,
+    rgba(100, 220, 255, 0.55) 70%,
+    rgba(100, 220, 255, 0.00) 95%,
+    transparent 100%
+  );
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* Inner ambient glow at top of app */
+body[data-shell="app"] #app::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 120px;
+  background: radial-gradient(
+    ellipse 70% 100% at 50% 0%,
+    rgba(100, 220, 255, 0.05) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Shell state visibility */
+body[data-shell="orb"]  #app { display: none; }
+body[data-shell="app"]  #orb { opacity: 0; pointer-events: none; }
+
+/* Morphing cross-fade states */
+body[data-morphing="to-app"] #app {
+  animation: app-enter var(--dur-morph-in) var(--ease-spring) both;
+}
+body[data-morphing="to-orb"] #app {
+  animation: app-exit var(--dur-morph-out) var(--ease-premium) both;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────────────────*/
+::-webkit-scrollbar        { width: 3px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  {
+  background: rgba(100, 220, 255, 0.18);
+  border-radius: var(--r-pill);
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(100, 220, 255, 0.38); }
+
+/* ── Global keyframes ────────────────────────────────────────────────────────*/
+
+@keyframes app-enter {
+  0%   { opacity: 0; transform: scale(0.96) translateY(4px); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes app-exit {
+  0%   { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.96); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(100, 220, 255, 0.00); }
+  50%       { box-shadow: 0 0 0 5px rgba(100, 220, 255, 0.12); }
+}
+
+@keyframes slide-in-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes mic-pulse {
+  0%, 100% { transform: scale(1);    opacity: 1; }
+  50%       { transform: scale(1.18); opacity: 0.75; }
+}
+
+@keyframes drawer-open {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0%   { opacity: 0.5; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.5; }
+}

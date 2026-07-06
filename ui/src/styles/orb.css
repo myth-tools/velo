@@ -1,0 +1,247 @@
+/* ════════════════════════════════════════════════════════════════════════════
+   VELO ORB  —  140px container (60px messenger-ball core).
+   Premium: glassy sphere + cyan bloom + slow shimmer halo + elastic animations.
+ ════════════════════════════════════════════════════════════════════════════*/
+
+/* ── Orb shell (transparent container, fills 140×140 window) ─────────────────*/
+#orb {
+  position: fixed;
+  top: 0; left: 0;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  outline: none;
+  user-select: none;
+  z-index: 9999;
+  /* Overall scale transitions delegated to CSS classes */
+  will-change: transform;
+}
+
+#orb.dragging { cursor: grabbing; }
+
+/* Hover: very slight lift — don't scale the outer shell (it'd clip) */
+#orb:not(.dragging):hover #orb-core {
+  transform: scale(1.06);
+  border-color: rgba(100, 220, 255, 0.55);
+}
+
+/* ── Core bubble ─────────────────────────────────────────────────────────────*/
+#orb-core {
+  position: relative;
+  z-index: 3;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+
+  /* Layered glass sphere gradient */
+  background:
+    /* Top-left specular highlight */
+    radial-gradient(
+      ellipse 60% 55% at 24% 16%,
+      rgba(140, 240, 255, 0.60) 0%,
+      rgba(60, 160, 220, 0.28) 40%,
+      transparent 70%
+    ),
+    /* Mid-tone body */
+    radial-gradient(
+      ellipse 100% 100% at 50% 50%,
+      rgba(18, 24, 46, 0.98) 0%,
+      rgba(10, 12, 22, 1) 100%
+    );
+
+  border: 1px solid rgba(100, 220, 255, 0.30);
+  box-shadow: var(--shadow-orb);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+
+  transition:
+    transform 340ms var(--ease-spring),
+    box-shadow 300ms var(--ease-smooth),
+    border-color 300ms var(--ease-smooth);
+
+  will-change: transform;
+}
+
+/* Bottom press feedback */
+#orb:active #orb-core {
+  transform: scale(0.90);
+  transition-duration: 100ms;
+  transition-timing-function: var(--ease-in-back);
+}
+
+/* ── Sphere gloss layer (pseudo) ──────────────────────────────────────────────*/
+#orb-core::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse 70% 50% at 32% 20%,
+    rgba(255, 255, 255, 0.20) 0%,
+    rgba(255, 255, 255, 0.08) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* ── Inner rotating shimmer ring ──────────────────────────────────────────────*/
+#orb-core::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(100, 220, 255, 0.20) 40deg,
+    rgba(168, 85, 247, 0.14) 100deg,
+    transparent 160deg,
+    rgba(100, 220, 255, 0.10) 220deg,
+    transparent 280deg,
+    rgba(100, 220, 255, 0.18) 340deg,
+    transparent 360deg
+  );
+  animation: orb-shimmer-spin 8s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+  mask-image: radial-gradient(
+    circle at 50% 50%,
+    transparent 46%,
+    black 52%,
+    black 58%,
+    transparent 64%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 50%,
+    transparent 46%,
+    black 52%,
+    black 58%,
+    transparent 64%
+  );
+}
+
+@keyframes orb-shimmer-spin {
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Glyph (lightning bolt) ───────────────────────────────────────────────────*/
+#orb-glyph {
+  width: 24px;
+  height: 24px;
+  color: var(--clr-cyan);
+  filter:
+    drop-shadow(0 0  8px rgba(100, 220, 255, 0.70))
+    drop-shadow(0 0 18px rgba(100, 220, 255, 0.30));
+  transition:
+    transform 300ms var(--ease-spring),
+    filter    300ms var(--ease-smooth);
+  animation: orb-glyph-float 5s ease-in-out infinite;
+  position: relative;
+  z-index: 5;
+}
+
+#orb:hover #orb-glyph {
+  transform: scale(1.12) rotate(-6deg);
+  filter:
+    drop-shadow(0 0 12px rgba(100, 220, 255, 0.85))
+    drop-shadow(0 0 24px rgba(100, 220, 255, 0.40));
+}
+
+@keyframes orb-glyph-float {
+  0%, 100% { transform: translateY(0px)   rotate(0deg);   }
+  33%       { transform: translateY(-2px)  rotate(1deg);   }
+  66%       { transform: translateY(1px)   rotate(-1deg);  }
+}
+
+#orb-label { display: none; }
+
+
+/* ── Click ripple ────────────────────────────────────────────────────────────*/
+#orb-ripple {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  z-index: 1;
+  pointer-events: none;
+  border: 1.5px solid rgba(100, 220, 255, 0.65);
+  opacity: 0;
+}
+
+#orb.rip #orb-ripple {
+  animation: orb-ripple 700ms var(--ease-premium) forwards;
+}
+
+@keyframes orb-ripple {
+  0%   { transform: scale(1);   opacity: 0.75; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+
+/* ── Squish (app → orb collapse) ─────────────────────────────────────────────*/
+/* Applied by JS as a class. Plays once then removes itself. */
+#orb.squish #orb-core {
+  animation: orb-squish 480ms var(--ease-spring) both;
+}
+
+@keyframes orb-squish {
+  0%   { transform: scale(0.10) scaleX(1.00) scaleY(1.00); opacity: 0; }
+  35%  { transform: scale(1.18) scaleX(1.25) scaleY(0.78); opacity: 1; }
+  55%  { transform: scale(1.05) scaleX(0.92) scaleY(1.08); }
+  70%  { transform: scale(1.02) scaleX(1.04) scaleY(0.97); }
+  85%  { transform: scale(1.00) scaleX(0.99) scaleY(1.01); }
+  100% { transform: scale(1)    scaleX(1)    scaleY(1);    }
+}
+
+/* ── Pop (orb → app expand) ──────────────────────────────────────────────────*/
+#orb.pop #orb-core {
+  animation: orb-pop 320ms var(--ease-in-back) both;
+}
+
+@keyframes orb-pop {
+  0%   { transform: scale(1);    opacity: 1; }
+  60%  { transform: scale(1.22); opacity: 0.9; }
+  100% { transform: scale(0.05); opacity: 0; }
+}
+
+/* ── Launch entrance (first open) ────────────────────────────────────────────*/
+@keyframes orb-enter {
+  0%   { transform: scale(0.10); opacity: 0; }
+  45%  { transform: scale(1.22); opacity: 1; }
+  65%  { transform: scale(0.94); }
+  80%  { transform: scale(1.05); }
+  100% { transform: scale(1.00); opacity: 1; }
+}
+
+body[data-shell="orb"] #orb {
+  animation: orb-enter 640ms var(--ease-spring-hard) both;
+}
+
+
+#orb:not(.dragging):hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Shell visibility ─────────────────────────────────────────────────────────*/
+body[data-shell="app"] #orb {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────────────*/
+@media (prefers-reduced-motion: reduce) {
+  #orb, #orb-core, #orb-glyph, #orb-ripple {
+    animation: none !important;
+    transition-duration: 10ms !important;
+  }
+  #orb-core::after { animation: none !important; }
+}

@@ -1,0 +1,44 @@
+# --- Rust / Cargo ---
+/target/
+src-tauri/target/
+**/*.rs.bk
+
+# --- Tauri (auto-generated schemas) ---
+src-tauri/gen/schemas/
+
+# --- Node.js / UI ---
+ui/node_modules/
+ui/dist/
+ui/.vite/
+
+# --- Environment files ---
+.env
+.env.local
+.env.*.local
+
+# --- OS junk ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# --- Editor / IDE ---
+.vscode/
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+*.bak
+
+# --- Logs ---
+*.log
+
+# --- Build artifacts ---
+/build/
+
+# --- Scratch ---
+notes/
