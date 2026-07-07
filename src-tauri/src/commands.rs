@@ -298,7 +298,7 @@ pub async fn close_window(app: AppHandle) -> Result<(), String> {
         .get_webview_window("main")
         .ok_or("Main window not found")?;
 
-    window.hide().map_err(|e| e.to_string())?;
+    window.close().map_err(|e| e.to_string())?;
     Ok(())
 }
 

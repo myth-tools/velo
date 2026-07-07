@@ -24,11 +24,14 @@ pub fn run() {
     tauri::Builder::default()
         .on_window_event(|window, event| match event {
             tauri::WindowEvent::CloseRequested { api, .. } => {
-                tracing::info!("Close requested — hiding window instead of closing");
-                let _ = window.hide();
+                tracing::info!("Close requested — minimizing window instead of closing");
+                let _ = window.minimize();
                 api.prevent_close();
             }
             tauri::WindowEvent::Focused(true) => {
+                if window.is_minimized().unwrap_or(false) {
+                    let _ = window.unminimize();
+                }
                 if !window.is_visible().unwrap_or(true) {
                     let _ = window.show();
                 }
