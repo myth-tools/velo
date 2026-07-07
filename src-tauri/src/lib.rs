@@ -22,6 +22,22 @@ pub fn run() {
     let app_state = AppState::new(config.clone());
 
     tauri::Builder::default()
+        .on_window_event(|window, event| {
+            match event {
+                tauri::WindowEvent::CloseRequested { api, .. } => {
+                    tracing::info!("Close requested — hiding window instead of closing");
+                    let _ = window.hide();
+                    api.prevent_close();
+                }
+                tauri::WindowEvent::Focused(true) => {
+                    if !window.is_visible().unwrap_or(true) {
+                        let _ = window.show();
+                    }
+                    let _ = window.set_focus();
+                }
+                _ => {}
+            }
+        })
         .manage(app_state)
         .setup(move |app| {
             let app_handle = app.handle().clone();
@@ -70,6 +86,7 @@ pub fn run() {
             commands::set_window_height,
             commands::minimize_window,
             commands::close_window,
+            commands::quit_app,
             commands::start_voice_input,
             commands::stop_voice_input,
             commands::morph_window,

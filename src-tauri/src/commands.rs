@@ -298,7 +298,14 @@ pub async fn close_window(app: AppHandle) -> Result<(), String> {
         .get_webview_window("main")
         .ok_or("Main window not found")?;
 
-    window.close().map_err(|e| e.to_string())?;
+    window.hide().map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+/// Fully quit the application (including background agent tasks).
+#[tauri::command]
+pub async fn quit_app(app: AppHandle) -> Result<(), String> {
+    app.exit(0);
     Ok(())
 }
 
